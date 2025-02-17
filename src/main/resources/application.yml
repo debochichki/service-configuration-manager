@@ -1,0 +1,42 @@
+spring:
+  profiles:
+    active: jdbc # If this profile isn't set, the Config Server will request Git URI
+  application:
+    name: service-configuration-manager
+
+  sql:
+    init:
+      mode: always
+      data-locations: classpath:db/data.sql
+
+  datasource:
+    url: ${MYSQL_URL:jdbc:mysql://localhost:3300}/${MYSQL_SCHEMA:configuration_manager}
+    driverClassName: com.mysql.cj.jdbc.Driver
+    username: ${MYSQL_USER:root}
+    password: ${MYSQL_PASSWORD}
+
+  cloud:
+    config:
+      server:
+        jdbc:
+          sql: |
+            WITH parameters AS (SELECT ? AS 'application', ? AS 'profile', ? AS 'label')
+            SELECT n.name, v.value
+            FROM application_configurations c, parameters p
+            JOIN JSON_TABLE(JSON_KEYS(c.value),
+                "$[*]" COLUMNS (
+                      rn FOR ORDINALITY,
+                      name VARCHAR(100) PATH '$'
+                      )
+                ) n
+            JOIN JSON_TABLE((c.value), 
+                "$.*" COLUMNS (
+                      rn FOR ORDINALITY,
+                      value VARCHAR(100) PATH '$'
+                      )
+                ) v ON n.rn = v.rn
+            WHERE c.application = p.application AND c.profile = p.profile
+          #order: 10
+
+server:
+  port: 8000

@@ -1,0 +1,10 @@
+version : '3'
+services:
+  mysql-config-manager:
+    image: "arm64v8/mysql:8.0.33"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3300:3306"
+    volumes:
+      - "./mysql/schema_init.sql:/docker-entrypoint-initdb.d/schema_init.sql"
