@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 public class ApplicationConfigurationsService {
     
     private final ApplicationConfigurationsRepository repository;
+    private final ConfigurationRefreshService refreshService;
     
     public List<ApplicationConfiguration> getAllConfigurations() {
         return repository.fetchAll();
@@ -24,6 +25,9 @@ public class ApplicationConfigurationsService {
                                                       final String profile,
                                                       final Map<String, String> configurationEntries) {
         repository.saveConfiguration(application, profile, configurationEntries);
+        
+        refreshService.refreshConfiguration(application);
+        
         return repository.fetchByApplicationAndProfile(application, profile)
             .orElseThrow(() -> new RuntimeException("Entity not found."));
     }

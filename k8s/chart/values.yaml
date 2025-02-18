@@ -1,0 +1,51 @@
+# Default values for service-configuration-manager chart.
+
+replicaCount: 1
+namespace: demo
+
+deploymentStrategy: RollingUpdate
+
+build:
+  buildNumber: 1
+
+image:
+  repository: "demo/service-configuration-manager"
+  pullPolicy: Never
+  tag: latest
+
+configurationManager:
+  db:
+    url: "jdbc:mysql://host.docker.internal:3300"
+    schema: "configuration_manager"
+    user: "${MYSQL_USER}"
+    password: "${MYSQL_PASSWORD}"
+
+readinessProbe:
+  initialDelaySeconds: 5
+  periodSeconds: 5
+  timeoutSeconds: 5
+  successThreshold: 1
+  failureThreshold: 6
+livenessProbe:
+  initialDelaySeconds: 5
+  periodSeconds: 5
+  timeoutSeconds: 5
+  successThreshold: 1
+  failureThreshold: 6
+
+podAnnotations: {}
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+#   memory: 128Mi
+
+autoscaling:
+  enabled: false

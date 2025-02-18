@@ -37,6 +37,7 @@ spring:
                 ) v ON n.rn = v.rn
             WHERE c.application = p.application AND c.profile = p.profile
           #order: 10
-
-server:
-  port: 8000
+    kubernetes:
+      discovery:
+        enabled: true
+        all-namespaces: true

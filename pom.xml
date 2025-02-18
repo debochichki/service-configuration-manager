@@ -22,6 +22,13 @@
 
         <!--suppress UnresolvedMavenProperty -->
         <mysql.password>${env.MYSQL_PASSWORD}</mysql.password>
+
+        <image-repo.path>demo/</image-repo.path>
+        <docker.image-name>service-configuration-manager</docker.image-name>
+        <docker.container-port>8080</docker.container-port>
+        <base.image>amazoncorretto:21-alpine</base.image>
+        <image-tag>${project.version}</image-tag>
+        <jib-goal>dockerBuild</jib-goal>
     </properties>
 
     <dependencies>
@@ -40,6 +47,14 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-config-server</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-kubernetes-client</artifactId>
         </dependency>
 
         <dependency>
@@ -141,5 +156,48 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>docker</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.google.cloud.tools</groupId>
+                        <artifactId>jib-maven-plugin</artifactId>
+                        <version>3.3.2</version>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>${jib-goal}</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <allowInsecureRegistries>true</allowInsecureRegistries>
+                            <from>
+                                <image>${base.image}</image>
+                            </from>
+                            <to>
+                                <image>
+                                    ${image-repo.path}${docker.image-name}:${image-tag}
+                                </image>
+                                <tags>
+                                    <tag>latest</tag>
+                                </tags>
+                            </to>
+                            <container>
+                                <ports>
+                                    <port>${docker.container-port}</port>
+                                </ports>
+                                <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
+                            </container>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>
