@@ -5,6 +5,11 @@ import lombok.Data;
 import java.time.LocalDateTime;
 import java.util.Map;
 
+/**
+ * DTO holding Application Configuration details
+ *
+ * @author dimitar.debochichki
+ */
 @Data
 public class ApplicationConfiguration {
     

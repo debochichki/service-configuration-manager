@@ -10,16 +10,34 @@ import com.demo.service.configuration.manager.repository.ApplicationConfiguratio
 
 import org.springframework.stereotype.Service;
 
+/**
+ * {@link Service} containing business logic for applying configurations
+ *
+ * @author dimitar.debochichki
+ */
 @Service
 @RequiredArgsConstructor
 public class ApplicationConfigurationsService {
     
     private final ApplicationConfigurationsRepository repository;
     
+    /**
+     * Get all application configurations
+     *
+     * @return {@link List<ApplicationConfiguration>}
+     */
     public List<ApplicationConfiguration> getAllConfigurations() {
         return repository.fetchAll();
     }
     
+    /**
+     * Save configuration properties for an application and provided profile
+     *
+     * @param application application name
+     * @param profile spring profile
+     * @param configurationEntries application properties {@link Map}
+     * @return the persisted {@link ApplicationConfiguration} entity
+     */
     public ApplicationConfiguration saveConfiguration(final String application,
                                                       final String profile,
                                                       final Map<String, String> configurationEntries) {

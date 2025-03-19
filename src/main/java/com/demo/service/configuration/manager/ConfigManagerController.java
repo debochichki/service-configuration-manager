@@ -15,6 +15,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * {@link RestController} providing operations on application(service) configurations
+ *
+ * @author dimitar.debochichki
+ */
 @RestController
 @RequestMapping(ConfigManagerController.BASE_RESOURCE_PATH + "/application-configurations")
 @AllArgsConstructor
