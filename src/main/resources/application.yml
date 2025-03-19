@@ -4,11 +4,6 @@ spring:
   application:
     name: service-configuration-manager
 
-  sql:
-    init:
-      mode: always
-      data-locations: classpath:db/data.sql
-
   datasource:
     url: ${MYSQL_URL:jdbc:mysql://localhost:3300}/${MYSQL_SCHEMA:configuration_manager}
     driverClassName: com.mysql.cj.jdbc.Driver

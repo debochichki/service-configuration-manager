@@ -20,6 +20,11 @@ import org.jooq.DSLContext;
 import org.jooq.JSON;
 import org.springframework.stereotype.Repository;
 
+/**
+ * Jooq/MySql implementation of the {@link ApplicationConfigurationsRepository}.
+ *
+ * @author dimitar.debochichki
+ */
 @Slf4j
 @Repository
 @RequiredArgsConstructor
