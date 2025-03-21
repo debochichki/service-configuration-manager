@@ -10,6 +10,9 @@ spring:
     username: ${MYSQL_USER:root}
     password: ${MYSQL_PASSWORD}
 
+  kafka:
+    bootstrap-servers: kafka.kafka:9092
+
   cloud:
     config:
       server:
@@ -32,7 +35,14 @@ spring:
                 ) v ON n.rn = v.rn
             WHERE c.application = p.application AND c.profile = p.profile
           #order: 10
-    kubernetes:
-      discovery:
+    bus:
+      enabled: true
+      refresh:
         enabled: true
-        all-namespaces: true
+      id: ${spring.application.name}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: busrefresh
