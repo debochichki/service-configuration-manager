@@ -7,8 +7,9 @@
 - Docker
 - Kubernetes
 - Kafka
+- Helm
 
-Running the service:
+### Running the service:
 - source local/docker/db_credentials.env
 - docker compose -f local/docker/docker-compose.yaml up -d
 - ./mvnw clean install -Pdocker
